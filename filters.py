@@ -28,7 +28,7 @@ class ImageProcessor:
         self.filter_var.set("")
 
         self.filter_var = tk.StringVar()
-        self.filter_var.set("Original Image")  # Set the initial selected option to "High Pass"
+        self.filter_var.set("Original Image")  
 
         self.filter_dropdown = tk.OptionMenu(self.filter_options, self.filter_var,"Original Image", "High Pass", "Low Pass", "Laplacian",
                                             "Median", "Salt & Pepper")
@@ -102,8 +102,8 @@ class ImageProcessor:
         max_count = max(histogram_values)
         scaling_factor = 300 / max_count
 
-        bar_width = 1  # Width of each histogram bar
-        bar_spacing = 1.5  # Spacing between adjacent bars
+        bar_width = 1  
+        bar_spacing = 1.5  
 
         # Draw background grid lines
         for i in range(0, 256, 16):
@@ -111,7 +111,7 @@ class ImageProcessor:
             self.hist_canvas.create_line(x, 500, x, 0, fill="lightgray")
 
         for i, count in enumerate(histogram_values):
-            x0 = i * (bar_width + bar_spacing) + 100  # Adjust the value as needed for horizontal shift
+            x0 = i * (bar_width + bar_spacing) + 100 
             y0 = 500
             x1 = x0 + bar_width
             y1 = 500 - (count * scaling_factor)
@@ -119,14 +119,14 @@ class ImageProcessor:
             # Draw histogram bar
             self.hist_canvas.create_rectangle(x0, y0, x1, y1, fill="steelblue")
 
-        # Draw y-axis
+        #x,y axis
         self.hist_canvas.create_line(100, 500, 100, 0, fill="black")
-        # Add description to y-axis
+       
         self.hist_canvas.create_text(40, 250, text="Frequency", fill="black", anchor=tk.NW, angle=90)
 
-        # Draw x-axis
+       
         self.hist_canvas.create_line(100, 500, self.hist_canvas.winfo_width(), 500, fill="black")
-        # Add description to x-axis
+       
         self.hist_canvas.create_text((self.hist_canvas.winfo_width() + 100) / 2, 540, text="Grayscale Value",
                                      fill="black")
 
@@ -137,16 +137,16 @@ class ImageProcessor:
             self.hist_canvas.create_text(95, y_pixel, text=str(y), anchor=tk.E, fill="black")
 
         # Draw numbers on x-axis
-        x_values = list(range(0, 256, 32))  # Adjust the increment as needed
+        x_values = list(range(0, 256, 32))  
         for x in x_values:
-            x_pixel = x * (bar_width + bar_spacing) + 100  # Adjust the value as needed for horizontal shift
+            x_pixel = x * (bar_width + bar_spacing) + 100 
             self.hist_canvas.create_text(x_pixel, 510, text=str(x), anchor=tk.N, fill="black")
 
         # Set appropriate margins for the histogram
-        hist_padding = 20  # Adjust the padding value as needed
-        hist_margin = 30  # Adjust the margin value as needed
+        hist_padding = 20  
+        hist_margin = 30  
         hist_width = len(histogram_values) * (
-                    bar_width + bar_spacing) + 100  # Adjust the value as needed for horizontal shift
+                    bar_width + bar_spacing) + 100  
         hist_height = 550
         self.hist_canvas.config(width=hist_width + hist_padding + hist_margin,
                                 height=hist_height, bd=0, highlightthickness=0)
@@ -160,10 +160,10 @@ class ImageProcessor:
         histogram = [0] * 256
         pixels = image.getdata()
 
-        for pixel in pixels:  # Get the grayscale value of the pixel
+        for pixel in pixels:  
             grayscale = int(sum(pixel) / 3)
 
-            # Increment the corresponding histogram bin
+            
             histogram[grayscale] += 1
 
         return histogram
@@ -176,8 +176,6 @@ class ImageProcessor:
         if filter_name == "Original Image":
             self.processed_image = self.original_image.copy()
         elif filter_name == "High Pass":
-            # a kernel (a 3x3 matrix) is defined to perform the high pass filtering operation
-            # The ImageFilter.Kernel function creates a kernel filter object, which is then applied to the original image using the filter method.
             kernel = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
             self.processed_image = self.original_image.filter(ImageFilter.Kernel((3, 3), kernel.flatten(), scale=1))
         elif filter_name == "Low Pass":
